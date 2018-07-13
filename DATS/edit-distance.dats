@@ -1,6 +1,7 @@
 %{^
 #define MIN3(a, b, c) ((a) < (b) ? ((a) < (c) ? (a) : (c)) : ((b) < (c) ? (b) : (c)))
 
+// taken from here: https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
 int levenshtein(char *s1, char *s2) {
     unsigned int s1len, s2len, x, y, lastdiag, olddiag;
     s1len = strlen(s1);
