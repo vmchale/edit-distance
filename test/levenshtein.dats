@@ -5,11 +5,16 @@
 
 implement main0 () =
   {
-    var actual = levenshtein("exclude", "excude")
-    var expected = 1
-    var b0 = actual = expected
+    var actual0 = levenshtein("exclude", "excude")
+    var expected0 = 1
+    var b0 = actual0 = expected0
     var n0 = @{ fst = "levenshtein", snd = b0 }
-    var xs = n0 :: nil
+    var actual1 = levenshtein_ats("exclude", "excude")
+    val () = println!(actual1)
+    var expected1 = 1
+    var b1 = actual1 = expected1
+    var n1 = @{ fst = "levenshtein_ats", snd = b1 }
+    var xs = n1 :: n0 :: nil
     var total = list_vt_length(xs)
     val g = @{ group = "Edit distance", leaves = xs } : test_tree
     val _ = iterate_list(g, 0, total)

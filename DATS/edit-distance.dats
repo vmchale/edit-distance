@@ -42,7 +42,7 @@ fun levenshtein_ats {m:nat}{n:nat}(x : string(m), y : string(n)) : int =
   let
     val x_l: size_t = string_length(x)
     val y_l: size_t = string_length(y)
-    val column: arrszref(int) = arrszref_make_elt(x_l, 0)
+    val column: arrszref(int) = arrszref_make_elt(x_l + 1, 0)
     
     fun loop1 {i:nat}(i : int(i)) : void =
       case+ i of
@@ -54,26 +54,32 @@ fun levenshtein_ats {m:nat}{n:nat}(x : string(m), y : string(n)) : int =
     
     val () = loop1(sz2i(x_l))
     
-    fun loop2 { j : nat | j == m }(j : int(j)) : void =
+    fun loop2 {j:nat}(j : int(j)) : void =
       case+ j of
         | 0 => ()
         | _ =>> let
-          val _ = column[0] = j
+          val () = column[0] := (sz2i(y_l) - j)
           
-          fun inner_loop { k : nat | k == n }(k : int(k), last_diag : int) : void =
-            case+ k of
+          fun inner_loop {k:nat}(k : int(k), last_diag : int) : void =
+            case- k of
               | 0 => ()
-              | _ =>> {
+              | _ when k > 0 =>> {
                 val old_diag = column[k]
-                val () = column[k] := min_3( column[k] + 1
+                val () = column[k] := min_3( column[x_l - k] + 1
                                            , column[k - 1] + 1
                                            , last_diag + bool2int(x[k - 1], y[j - 1])
                                            )
                 val () = inner_loop(k - 1, old_diag)
               }
-        in end
+          
+          val _ = inner_loop(sz2i(y_l), j - 1)
+        in
+          loop2(j - 1)
+        end
+    
+    val () = loop2(sz2i(y_l))
   in
-    column[sz2i(x_l)]
+    column[x_l]
   end
 
 extern
