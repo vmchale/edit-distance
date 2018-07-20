@@ -1,5 +1,9 @@
 ---
 language: c
+matrix:
+  include:
+    - os: linux
+    - os: osx
 cache:
   directories:
     - $HOME/.atspkg
