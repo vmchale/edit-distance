@@ -40,7 +40,7 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
             fun inner_loop { j : nat | j > 0 }(y : int(j), last_diag : int) : void =
               if y <= sz2i(s1_l) then
                 let
-                  val old_diag = column[y]
+                  var old_diag = column[y]
                   val () = column[y] := min_3( column[y] + 1
                                              , column[y - 1] + 1
                                              , last_diag + bool2int(s1[y - 1], s2[x - 1])
@@ -63,6 +63,12 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
     column[s1_l]
   end
 
-extern
 fn levenshtein_vt {m:nat}{n:nat}(s1 : !strnptr(m), s2 : !strnptr(n)) : int =
-  "mac#"
+  let
+    val p1 = strnptr2ptr(s1)
+    val p2 = strnptr2ptr(s2)
+    val s1 = $UN.ptr0_get<string(m)>(p1)
+    val s2 = $UN.ptr0_get<string(n)>(p2)
+  in
+    levenshtein(s1, s2)
+  end
