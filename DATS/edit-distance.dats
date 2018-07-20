@@ -11,6 +11,8 @@ int levenshtein(char *s1, char *s2) {
   unsigned int column[s1len + 1];
   for (y = 1; y <= s1len; y++)
     column[y] = y;
+  printf("\n");
+
   for (x = 1; x <= s2len; x++) {
     column[0] = x;
     for (y = 1, lastdiag = x - 1; y <= s1len; y++) {
@@ -20,6 +22,8 @@ int levenshtein(char *s1, char *s2) {
       lastdiag = olddiag;
     }
   }
+  // for (y = 1; y <= s1len; y++)
+  //   printf("%d", column[y]);
   return (column[s1len]);
 }
 %}
@@ -27,6 +31,7 @@ int levenshtein(char *s1, char *s2) {
 #include "share/atspre_staload.hats"
 #include "share/atspre_define.hats"
 
+staload UN = "prelude/SATS/unsafe.sats"
 staload "prelude/SATS/string.sats"
 
 fun min_3(x : int, y : int, z : int) : int =
@@ -38,13 +43,23 @@ fun bool2int(x : char, y : char) : int =
   else
     1
 
-fun levenshtein_ats {m:nat}{n:nat}(x : string(m), y : string(n)) : int =
+extern
+fun string_unsafe_get(x : string, y : size_t) : char =
+  "mac#"
+
+fun levenshtein_ats {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
   let
-    val x_l: size_t = string_length(x)
-    val y_l: size_t = string_length(y)
-    val column: arrszref(int) = arrszref_make_elt(x_l + 1, 0)
+    val s1_l: size_t = string_length(s1)
+    val s2_l: size_t = string_length(s2)
+    val column: arrszref(int) = arrszref_make_elt(s1_l + 1, 0)
     
-    fun loop1 {i:nat}(i : int(i)) : void =
+    fun print_loop {i:nat}(i : int(i)) : void =
+      case+ i of
+        | 0 => ()
+        | k =>> (print_loop(k - 1) ; print!(column[k]))
+    
+    //  ; print_loop(k - 1))
+    fun loop1 { i : nat | i <= m }(i : int(i)) : void =
       case+ i of
         | 0 => ()
         | i =>> {
@@ -52,34 +67,37 @@ fun levenshtein_ats {m:nat}{n:nat}(x : string(m), y : string(n)) : int =
           val () = loop1(i - 1)
         }
     
-    val () = loop1(sz2i(x_l))
+    val () = loop1(sz2i(s1_l))
     
-    fun loop2 {j:nat}(j : int(j)) : void =
-      case+ j of
-        | 0 => ()
-        | _ =>> let
-          val () = column[0] := (sz2i(y_l) - j)
-          
-          fun inner_loop {k:nat}(k : int(k), last_diag : int) : void =
-            case- k of
-              | 0 => ()
-              | _ when k > 0 =>> {
-                val old_diag = column[k]
-                val () = column[k] := min_3( column[x_l - k] + 1
-                                           , column[k - 1] + 1
-                                           , last_diag + bool2int(x[k - 1], y[j - 1])
-                                           )
-                val () = inner_loop(k - 1, old_diag)
-              }
-          
-          val _ = inner_loop(sz2i(y_l), j - 1)
-        in
-          loop2(j - 1)
-        end
+    fun loop2 { i : nat | i > 0 }(x : int(i)) : void =
+      if x <= sz2i(s2_l) then
+        {
+          val () = column[0] := x
+          val () = let
+            fun inner_loop { j : nat | j > 0 }(y : int(j), last_diag : int) : void =
+              if y <= sz2i(s1_l) then
+                let
+                  val old_diag = column[y]
+                  val () = column[y] := min_3( column[y] + 1
+                                             , column[y - 1] + 1
+                                             , last_diag + bool2int(s1[y - 1], s2[x - 1])
+                                             )
+                in
+                  inner_loop(y + 1, old_diag)
+                end
+              else
+                ()
+          in
+            inner_loop(1, x - 1)
+          end
+          val () = loop2(x + 1)
+        }
+      else
+        ()
     
-    val () = loop2(sz2i(y_l))
+    val () = loop2(1)
   in
-    column[x_l]
+    column[s1_l]
   end
 
 extern

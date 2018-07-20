@@ -9,5 +9,5 @@ prelude.default ⫽
       , gcBin = True
       }
     ]
-  , dependencies = prelude.mapPlainDeps [ "specats" ]
+  , dependencies = [ prelude.lowerDeps { name = "specats", version = [0,4,0] } ]
   }
