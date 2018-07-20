@@ -64,5 +64,5 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
   end
 
 extern
-fun levenshtein_vt(s : !Strptr1, t : !Strptr1) : int =
-  "mac#levenshtein"
+fn levenshtein_vt {m:nat}{n:nat}(s1 : !strnptr(m), s2 : !strnptr(n)) : int =
+  "mac#"
