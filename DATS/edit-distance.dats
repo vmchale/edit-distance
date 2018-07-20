@@ -22,10 +22,10 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
                 let
                   var old_diag = column[y]
                   
-                  fun min_3(x : int, y : int, z : int) : int =
+                  fn min_3(x : int, y : int, z : int) : int =
                     min(x, (min(y, z)))
                   
-                  fun bool2int(c0 : char, c1 : char) : int =
+                  fn bool2int(c0 : char, c1 : char) : int =
                     if c0 = c1 then
                       0
                     else
@@ -47,6 +47,14 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
     val () = loop2(1)
   in
     column[s1_l]
+  end
+
+fn levenshtein_(s1 : string, s2 : string) : int =
+  let
+    fn witness(s : string) : [m:nat] string(m) =
+      $UN.cast(s)
+  in
+    levenshtein(witness(s1), witness(s2))
   end
 
 fn levenshtein_vt {m:nat}{n:nat}(s1 : !strnptr(m), s2 : !strnptr(n)) : int =
