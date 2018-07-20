@@ -17,11 +17,6 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
     val s2_l: size_t = string_length(s2)
     val column: arrszref(int) = arrszref_make_elt(s1_l + 1, 0)
     
-    fun print_loop {i:nat}(i : int(i)) : void =
-      case+ i of
-        | 0 => ()
-        | k =>> (print_loop(k - 1) ; print!(column[k]))
-    
     fun loop1 { i : nat | i <= m }(i : int(i)) : void =
       case+ i of
         | 0 => ()
