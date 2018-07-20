@@ -44,15 +44,11 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
                 in
                   inner_loop(y + 1, old_diag)
                 end
-              else
-                ()
           in
             inner_loop(1, x - 1)
           end
           val () = loop2(x + 1)
         }
-      else
-        ()
     
     val () = loop2(1)
   in
