@@ -9,4 +9,4 @@ val levenshtein_delay: io = lam () => levenshtein_bench()
 // GOAL: around 100ns
 // ACTUAL: around 300ns
 implement main0 () =
-  { val _ = print_slope("levenshtein", 13, levenshtein_delay) }
+  { val _ = print_slope("levenshtein", 14, levenshtein_delay) }
