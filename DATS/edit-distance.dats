@@ -32,8 +32,8 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
                   fun min_3(x : int, y : int, z : int) : int =
                     min(x, (min(y, z)))
                   
-                  fun bool2int(x : char, y : char) : int =
-                    if x = y then
+                  fun bool2int(c0 : char, c1 : char) : int =
+                    if c0 = c1 then
                       0
                     else
                       1
