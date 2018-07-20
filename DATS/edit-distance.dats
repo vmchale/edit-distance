@@ -65,10 +65,10 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
 
 fn levenshtein_vt {m:nat}{n:nat}(s1 : !strnptr(m), s2 : !strnptr(n)) : int =
   let
-    val p1 = strnptr2ptr(s1)
-    val p2 = strnptr2ptr(s2)
-    val s1 = $UN.ptr0_get<string(m)>(p1)
-    val s2 = $UN.ptr0_get<string(n)>(p2)
+    var p1 = strnptr2ptr(s1)
+    var p2 = strnptr2ptr(s2)
+    var s1 = $UN.ptr0_get<string(m)>(p1)
+    var s2 = $UN.ptr0_get<string(n)>(p2)
   in
     levenshtein(s1, s2)
   end
