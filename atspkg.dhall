@@ -15,5 +15,6 @@ prelude.default ⫽
       }
     ]
   , dependencies =
-    prelude.mapPlainDeps [ "ats-bench" ] # [ prelude.lowerDeps { name = "specats", version = [0,4,0] } ]
+        prelude.mapPlainDeps [ "ats-bench" ]
+            # [ prelude.lowerDeps { name = "specats", version = [0,4,0] } ]
   }

@@ -11,4 +11,4 @@ fun levenshtein_bench() : void =
 val levenshtein_delay: io = lam () => levenshtein_bench()
 
 implement main0 () =
-  { val _ = print_slope("levenshtein", 14, levenshtein_delay) }
+  { val _ = print_slope("levenshtein", 13, levenshtein_delay) }
