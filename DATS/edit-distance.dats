@@ -13,8 +13,8 @@ fun bool2int(x : char, y : char) : int =
 // Ported over from https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
 fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
   let
-    val s1_l: size_t = length(s1)
-    val s2_l: size_t = length(s2)
+    val s1_l: size_t(m) = length(s1)
+    val s2_l: size_t(n) = length(s2)
     val column: arrszref(int) = arrszref_make_elt(s1_l + 1, 0)
     
     fun loop1 { i : nat | i <= m }(i : int(i)) : void =
