@@ -1,5 +1,4 @@
 #include "share/atspre_staload.hats"
-#include "share/HATS/atslib_staload_libats_libc.hats"
 #include "DATS/edit-distance.dats"
 #include "$PATSHOMELOCS/specats-0.4.0/mylibies.hats"
 

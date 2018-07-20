@@ -1,7 +1,3 @@
-#include "share/atspre_staload.hats"
-#include "share/HATS/atspre_staload_prelude.hats"
-#include "share/HATS/atspre_staload_libats_ML.hats"
-#include "share/HATS/atslib_staload_libats_libc.hats"
 #include "$PATSHOMELOCS/ats-bench-0.2.3/bench.dats"
 #include "DATS/edit-distance.dats"
 
@@ -10,5 +6,7 @@ fun levenshtein_bench() : void =
 
 val levenshtein_delay: io = lam () => levenshtein_bench()
 
+// GOAL: around 100ns
+// ACTUAL: around 300ns
 implement main0 () =
   { val _ = print_slope("levenshtein", 13, levenshtein_delay) }
