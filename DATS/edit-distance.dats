@@ -6,7 +6,7 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
     val s1_l: size_t(m) = length(s1)
     val s2_l: size_t(n) = length(s2)
     val column: arrayref(int, m+1) = arrayref_make_elt(s1_l + 1, 0)
-    var i: int = sz2i(s1_l)
+    var i: int
     val () = for* { i : nat | i <= m }  .<i>. (i : int(i)) =>
         (i := sz2i(s1_l) ; i > 0 ; i := i - 1)
         (column[i] := i)
