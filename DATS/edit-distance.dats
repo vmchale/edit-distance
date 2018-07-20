@@ -1,15 +1,6 @@
 staload UN = "prelude/SATS/unsafe.sats"
 staload "prelude/SATS/string.sats"
 
-fun min_3(x : int, y : int, z : int) : int =
-  min(x, (min(y, z)))
-
-fun bool2int(x : char, y : char) : int =
-  if x = y then
-    0
-  else
-    1
-
 // Ported over from https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
 fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
   let
@@ -37,6 +28,16 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
               if y <= sz2i(s1_l) then
                 let
                   var old_diag = column[y]
+                  
+                  fun min_3(x : int, y : int, z : int) : int =
+                    min(x, (min(y, z)))
+                  
+                  fun bool2int(x : char, y : char) : int =
+                    if x = y then
+                      0
+                    else
+                      1
+                  
                   val () = column[y] := min_3( column[y] + 1
                                              , column[y - 1] + 1
                                              , last_diag + bool2int(s1[y - 1], s2[x - 1])
