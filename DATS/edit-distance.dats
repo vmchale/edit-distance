@@ -27,12 +27,13 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
     
     val () = loop1(sz2i(s1_l))
     
-    fun loop2 { i : nat | i > 0 && i <= n+1 }(x : int(i)) : void =
+    fun loop2 { i : nat | i > 0 && i <= n+1 } .<n-i+1>. (x : int(i)) :<1> void =
       if x <= sz2i(s2_l) then
         {
           val () = column[0] := x
           val () = let
-            fun inner_loop { j : nat | j > 0 && j <= m+1 }(y : int(j), last_diag : int) : void =
+            fun inner_loop { j : nat | j > 0 && j <= m+1 } .<m-j+1>. (y : int(j), last_diag : int) :<1>
+              void =
               if y <= sz2i(s1_l) then
                 let
                   var old_diag = column[y]
