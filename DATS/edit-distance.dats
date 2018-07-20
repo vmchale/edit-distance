@@ -1,5 +1,4 @@
 staload UN = "prelude/SATS/unsafe.sats"
-staload "prelude/SATS/string.sats"
 
 // Ported over from https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
 fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
