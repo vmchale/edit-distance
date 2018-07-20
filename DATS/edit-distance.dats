@@ -58,7 +58,6 @@ fun levenshtein_ats {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
         | 0 => ()
         | k =>> (print_loop(k - 1) ; print!(column[k]))
     
-    //  ; print_loop(k - 1))
     fun loop1 { i : nat | i <= m }(i : int(i)) : void =
       case+ i of
         | 0 => ()
