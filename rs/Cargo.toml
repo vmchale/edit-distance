@@ -1,0 +1,19 @@
+[package]
+name = "rs"
+version = "0.1.0"
+authors = ["Vanessa McHale <vanessa.mchale@iohk.io>"]
+exclude = [ ".gitignore" ]
+
+[profile.release]
+lto = true
+
+[dev-dependencies]
+criterion = { git = "https://github.com/japaric/criterion.rs.git" }
+
+[[bench]]
+name = "lev"
+harness = false
+
+[dependencies]
+levenshtein = "1.0"
+strsim = "0.7"
