@@ -8,6 +8,7 @@ in safe ATS and is nearly as fast as the C implementation.
 ## Benchmarks
 
 | Language | Library | Unicode | Time |
+| -------- | ------- | ------- | ---- |
 | Haskell | `edit-distance` | X | 479.0 ns |
 | Rust | `levenshtein-rs` | X | 137.4 ns
 | Rust | `strsim` | X | 140.4 ns
