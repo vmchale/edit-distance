@@ -8,6 +8,12 @@ prelude.default ⫽
       , target = "${prelude.atsProject}/test"
       , gcBin = True
       }
+    , prelude.bin ⫽
+      { src = "test/bench.dats"
+      , target = "${prelude.atsProject}/bench"
+      , gcBin = True
+      }
     ]
-  , dependencies = [ prelude.lowerDeps { name = "specats", version = [0,4,0] } ]
+  , dependencies =
+    prelude.mapPlainDeps [ "ats-bench" ] # [ prelude.lowerDeps { name = "specats", version = [0,4,0] } ]
   }
