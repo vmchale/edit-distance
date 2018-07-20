@@ -5,7 +5,8 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
   let
     val s1_l: size_t(m) = length(s1)
     val s2_l: size_t(n) = length(s2)
-    val column: arrszref(int) = arrszref_make_elt(s1_l + 1, 0)
+    val column: arrayref(int, m+1) = arrayref_make_elt(s1_l + 1, 0)
+    var i: int = sz2i(s1_l)
     
     fun loop1 { i : nat | i <= m } .<i>. (i : int(i)) : void =
       case+ i of
@@ -17,6 +18,11 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
     
     val () = loop1(sz2i(s1_l))
     
+    // val () = while* {i:nat} .<i>. (i: int(i)) => (i > 0)(column[i] := i ; i := i - 1)
+    // val () = while(i > 0)(column[i] := i ; i := i - 1)
+    // val () = for* {i:nat | i <= m} .<i>. (i: int(i)) =>
+    //    (i := sz2i(s1_l); i > 0; i := i -1)
+    //     (column[i] := i)
     fun loop2 { i : nat | i > 0 && i <= n+1 } .<n-i+1>. (x : int(i)) : void =
       if x <= sz2i(s2_l) then
         {
