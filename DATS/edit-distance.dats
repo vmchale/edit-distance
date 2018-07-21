@@ -18,11 +18,8 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
         var i: int = 0
         prval [larr:addr]EQADDR () = eqaddr_make_ptr(p1_arr)
         var p = p1_arr
-        
         prvar pf0 = array_v_nil{int}()
-        
         prvar pf1 = pf_arr
-        
         val () = while* { i : nat | i <= m }  .<m-i>. ( i : int(i)
                                                       , p : ptr(larr+i*sizeof(int))
                                                       , pf0 : array_v(int, larr, i)
