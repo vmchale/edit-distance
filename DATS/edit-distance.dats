@@ -9,7 +9,7 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
     val s1_l: size_t(m) = length(s1)
     val s2_l: size_t(n) = length(s2)
     
-    fun loop1() : arrayref(int, m+1) =
+    fn array_initialize() : arrayref(int, m+1) =
       let
         val (pf_arr, pf_gc | p_arr) = array_ptr_alloc<int>(succ(s1_l))
         var p1_arr = ptr1_succ<int>(p_arr)
@@ -45,21 +45,20 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
         arrayptr_refize(res)
       end
     
-    val column = loop1()
+    val column = array_initialize()
     
     fun loop2 { i : nat | i > 0 && i <= n+1 } .<n-i+1>. (x : int(i)) : void =
       if x <= sz2i(s2_l) then
         {
           val () = column[0] := x
           val () = let
-            fun inner_loop { j : nat | j > 0 && j <= m+1 } .<m-j+1>. (y : int(j), last_diag : int) :
-              void =
+            fun inner_loop { j : nat | j > 0 && j <= m+1 } .<m-j+1>. (y : int(j), last_diag : int) : void =
               if y <= sz2i(s1_l) then
                 let
-                  fun min_3(x : int, y : int, z : int) : int =
+                  fn min_3(x : int, y : int, z : int) : int =
                     min(x, (min(y, z)))
                   
-                  fun bool2int(x : char, y : char) : int =
+                  fn bool2int(x : char, y : char) : int =
                     if x = y then
                       0
                     else
