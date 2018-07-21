@@ -12,7 +12,7 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
     fun loop1() : arrayref(int, m+1) =
       let
         val (pf_arr, pf_gc | p_arr) = array_ptr_alloc<int>(succ(s1_l))
-        val p1_arr = ptr1_succ<int>(p_arr)
+        var p1_arr = ptr1_succ<int>(p_arr)
         prval (pf1_at, pf_arr) = array_v_uncons{int?}(pf_arr)
         val () = ptr_set<int>(pf1_at | p_arr, 0)
         var i: int = 0
@@ -34,7 +34,7 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
             {
               prval (pf_at, pf1_res) = array_v_uncons{int?}(pf1)
               prval () = pf1 := pf1_res
-              val c = g0ofg1(i)
+              var c = g0ofg1(i)
               val () = ptr_set<int>(pf_at | p, c)
               val () = p := ptr1_succ<int>(p)
               prval () = pf0 := array_v_extend{int}(pf0, pf_at)
@@ -43,7 +43,7 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
         prval () = pf_arr := pf0
         prval () = array_v_unnil{int?}(pf1)
         prval pf_arr = array_v_cons{int}(pf1_at, pf_arr)
-        val res = arrayptr_encode(pf_arr, pf_gc | p_arr)
+        var res = arrayptr_encode(pf_arr, pf_gc | p_arr)
       in
         arrayptr_refize(res)
       end
