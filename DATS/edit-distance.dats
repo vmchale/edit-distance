@@ -52,18 +52,18 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
         {
           val () = column[0] := x
           val () = let
-            fn min_3(x : int, y : int, z : int) : int =
-              min(x, (min(y, z)))
-            
-            fn bool2int(x : char, y : char) : int =
-              if x = y then
-                0
-              else
-                1
-            
             fun inner_loop { j : nat | j > 0 && j <= m+1 } .<m-j+1>. (y : int(j), last_diag : int) : void =
               if y <= sz2i(s1_l) then
                 let
+                  fn min_3(x : int, y : int, z : int) : int =
+                    min(x, (min(y, z)))
+                  
+                  fn bool2int(x : char, y : char) : int =
+                    if x = y then
+                      0
+                    else
+                      1
+                  
                   var old_diag = column[y]
                   val () = column[y] := min_3( column[y] + 1
                                              , column[y - 1] + 1
