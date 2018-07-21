@@ -6,6 +6,7 @@ exclude = [ ".gitignore" ]
 
 [profile.release]
 lto = true
+panic = "abort"
 
 [dev-dependencies]
 criterion = { git = "https://github.com/japaric/criterion.rs.git" }

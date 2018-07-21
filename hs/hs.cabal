@@ -19,7 +19,7 @@ benchmark hs-bench
     type: exitcode-stdio-1.0
     main-is: Bench.hs
     hs-source-dirs: bench
-    default-language: Haskell2010
+    default-language: Haskell98
     ghc-options: -Wall
     build-depends:
         base -any,
