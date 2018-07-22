@@ -106,18 +106,11 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
 
 fn levenshtein_(s1 : string, s2 : string) : int =
   let
-    fn witness(s : string) : [m:nat] string(m) =
-      $UN.cast(s)
+    extern
+    castfn witness(s : string) : [m:nat] string(m)
   in
     levenshtein(witness(s1), witness(s2))
   end
 
 fn levenshtein_vt {m:nat}{n:nat}(s1 : !strnptr(m), s2 : !strnptr(n)) : int =
-  let
-    var p1 = strnptr2ptr(s1)
-    var p2 = strnptr2ptr(s2)
-    var s1 = $UN.ptr0_get<string(m)>(p1)
-    var s2 = $UN.ptr0_get<string(n)>(p2)
-  in
-    levenshtein(s1, s2)
-  end
+  levenshtein{m}{n}($UN.castvwtp1(s1), $UN.castvwtp1(s2))
