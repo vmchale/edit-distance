@@ -3,24 +3,15 @@ staload UN = "prelude/SATS/unsafe.sats"
 extern
 fun {a:vt0p} array_ptr_alloca {n:int} (asz : size_t(n)) :<!wrt> [l:agz] (array_v(a?, l, n), mfree_gc_v(l)| ptr(l))
 
-implement
-{a}
-array_ptr_alloca
-  {n}(asz) = let
-val
-[l:addr]
-(
-  pf, pfgc | p
-) = malloc_gc (asz * sizeof<a>)
-prval pf =
-__assert(pf) where
-{
-extern praxi __assert
-  (pf: b0ytes (n*sizeof(a)) @ l): array_v (a?, l, n)
-}
-in
-  (pf, pfgc | p)
-end
+implement {a} array_ptr_alloca {n}(asz) =
+  let
+    val [l:addr] (pf, pfgc | p) = malloc_gc(asz * sizeof<a>)
+    prval pf = __assert(pf) where
+    { extern
+      praxi __assert(pf : b0ytes(n*sizeof(a)) @ l) : array_v(a?, l, n) }
+  in
+    (pf, pfgc | p)
+  end
 
 // end of [array_ptr_alloc]
 // Ported over from
