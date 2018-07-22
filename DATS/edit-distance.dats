@@ -1,16 +1,23 @@
 staload UN = "prelude/SATS/unsafe.sats"
 
 extern
-fun {a:vt0p} array_ptr_alloca {n:int} (asz : size_t(n)) :<!wrt> [l:agz] (array_v(a?, l, n), mfree_gc_v(l)| ptr(l))
+fun alloca {n:int}(bsz : size_t(n)) :<!wrt> [l:agz] (b0ytes(n) @ l | ptr(l)) =
+  "mac#"
 
-implement {a} array_ptr_alloca {n}(asz) =
+extern
+castfn arrayptr_alloca_encode : {a:vt0p} {l:addr} {n:int} (array_v(INV(a), l, n) | ptr(l)) -<0> arrayptr(a, l, n)
+
+extern
+fun {a:vt0p} array_ptr_alloca {n:int} (asz : size_t(n)) :<!wrt> [l:agz] (array_v(a?, l, n) | ptr(l))
+
+implement {a} array_ptr_alloca {n} (asz) =
   let
-    val [l:addr] (pf, pfgc | p) = malloc_gc(asz * sizeof<a>)
+    val [l:addr](pf | p) = alloca(asz * sizeof<a>)
     prval pf = __assert(pf) where
     { extern
       praxi __assert(pf : b0ytes(n*sizeof(a)) @ l) : array_v(a?, l, n) }
   in
-    (pf, pfgc | p)
+    (pf | p)
   end
 
 // end of [array_ptr_alloc]
@@ -25,7 +32,7 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
     
     fn array_initialize() : arrayref(int, m+1) =
       let
-        val (pf_arr, pf_gc | p_arr) = array_ptr_alloc<int>(succ(s1_l))
+        val (pf_arr | p_arr) = array_ptr_alloca<int>(succ(s1_l))
         var p1_arr = ptr1_succ<int>(p_arr)
         prval (pf1_at, pf_arr) = array_v_uncons{int?}(pf_arr)
         val () = ptr_set<int>(pf1_at | p_arr, 0)
@@ -54,7 +61,7 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
         prval () = pf_arr := pf0
         prval () = array_v_unnil{int?}(pf1)
         prval pf_arr = array_v_cons{int}(pf1_at, pf_arr)
-        var res = arrayptr_encode(pf_arr, pf_gc | p_arr)
+        var res = arrayptr_alloca_encode(pf_arr | p_arr)
       in
         arrayptr_refize(res)
       end

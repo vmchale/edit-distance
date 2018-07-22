@@ -9,7 +9,7 @@ in safe ATS and is performant.
 
 | Language | Library | Unicode | Time |
 | -------- | ------- | ------- | ---- |
-| ATS | `edit-distance` |  | 94.03 ns |
+| ATS | `edit-distance` |  | 67.67 ns ns |
 | Rust | `levenshtein-rs` | X | 137.4 ns
 | Rust | `strsim` | X | 140.4 ns
 | Haskell | `edit-distance` | X | 413.5 ns |
