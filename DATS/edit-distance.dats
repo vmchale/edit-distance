@@ -27,12 +27,18 @@ implement {a} array_ptr_alloca {n} (asz) =
 // With contributions from Hongwei Xi and Artyom Shalkhakov
 fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
   let
-    val s1_l: size_t(m) = length(s1)
+    val s1_l
+      : size_t(m) = length(s1)
     val s2_l: size_t(n) = length(s2)
     
     fn array_initialize() : arrayref(int, m+1) =
       let
+        
+#ifdef ALLOCA
         val (pf_arr | p_arr) = array_ptr_alloca<int>(succ(s1_l))
+#else
+        val (pf_arr, pf_gc | p_arr) = array_ptr_alloc<int>(succ(s1_l))
+#endif
         var p1_arr = ptr1_succ<int>(p_arr)
         prval (pf1_at, pf_arr) = array_v_uncons{int?}(pf_arr)
         val () = ptr_set<int>(pf1_at | p_arr, 0)
@@ -61,7 +67,12 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
         prval () = pf_arr := pf0
         prval () = array_v_unnil{int?}(pf1)
         prval pf_arr = array_v_cons{int}(pf1_at, pf_arr)
+        
+#ifdef ALLOCA
         var res = arrayptr_alloca_encode(pf_arr | p_arr)
+#else
+        var res = arrayptr_encode(pf_arr, pf_gc | p_arr)
+#endif
       in
         arrayptr_refize(res)
       end
