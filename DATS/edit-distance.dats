@@ -20,6 +20,13 @@ implement {a} array_ptr_alloca {n} (asz) =
     (pf | p)
   end
 
+extern
+fun {a:vt0p} arrayptr_alloca_uninitized {n:int} (asz : size_t(n)) :<!wrt> arrayptr(a?, n)
+
+// FIXME: figure this out using alloca
+implement {a} arrayptr_alloca_uninitized (asz) =
+  arrayptr_encode2(array_ptr_alloc<a>(asz))
+
 // end of [array_ptr_alloc]
 // Ported over from
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
@@ -27,57 +34,13 @@ implement {a} array_ptr_alloca {n} (asz) =
 // With contributions from Hongwei Xi and Artyom Shalkhakov
 fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
   let
-    val s1_l
-      : size_t(m) = length(s1)
+    val s1_l: size_t(m) = length(s1)
     val s2_l: size_t(n) = length(s2)
-    
-    fn array_initialize() : arrayref(int, m+1) =
-      let
-        
-#ifdef ALLOCA
-        val (pf_arr | p_arr) = array_ptr_alloca<int>(succ(s1_l))
-#else
-        val (pf_arr, pf_gc | p_arr) = array_ptr_alloc<int>(succ(s1_l))
-#endif
-        var p1_arr = ptr1_succ<int>(p_arr)
-        prval (pf1_at, pf_arr) = array_v_uncons{int?}(pf_arr)
-        val () = ptr_set<int>(pf1_at | p_arr, 0)
-        var i: int = 0
-        prval [larr:addr]EQADDR () = eqaddr_make_ptr(p1_arr)
-        var p = p1_arr
-        prvar pf0 = array_v_nil{int}()
-        prvar pf1 = pf_arr
-        val () = while* { i : nat | i <= m }  .<m-i>. ( i : int(i)
-                                                      , p : ptr(larr+i*sizeof(int))
-                                                      , pf0 : array_v(int, larr, i)
-                                                      , pf1 : array_v(int?, larr+i*sizeof(int), m-i)
-                                                      ) : ( pf0 : array_v(int, larr, m)
-                                                          , pf1 : array_v(int?, larr+i*sizeof(int), 0)
-                                                          ) =>
-            (i < sz2i(s1_l))
-            {
-              prval (pf_at, pf1_res) = array_v_uncons{int?}(pf1)
-              prval () = pf1 := pf1_res
-              var c = g0ofg1(i)
-              val () = ptr_set<int>(pf_at | p, c)
-              val () = p := ptr1_succ<int>(p)
-              prval () = pf0 := array_v_extend{int}(pf0, pf_at)
-              val () = i := i + 1
-            }
-        prval () = pf_arr := pf0
-        prval () = array_v_unnil{int?}(pf1)
-        prval pf_arr = array_v_cons{int}(pf1_at, pf_arr)
-        
-#ifdef ALLOCA
-        var res = arrayptr_alloca_encode(pf_arr | p_arr)
-#else
-        var res = arrayptr_encode(pf_arr, pf_gc | p_arr)
-#endif
-      in
-        arrayptr_refize(res)
-      end
-    
-    val column = array_initialize()
+    val column = arrayptr_make_uninitized<int>(s1_l + 1)
+    val () = arrayptr_initize<int>(column, s1_l + 1) where
+    { implement array_initize$init<int> (i, x) =
+        x := sz2i(i) }
+    val column = arrayptr_refize(column)
     
     fun loop2 { i : nat | i > 0 && i <= n+1 } .<n-i+1>. (x : int(i)) : void =
       if x <= sz2i(s2_l) then
