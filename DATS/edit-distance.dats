@@ -25,7 +25,7 @@ implement {a} array_ptr_alloca {n} (asz) =
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
 //
 // With contributions from Hongwei Xi and Artyom Shalkhakov
-fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
+fn levenshtein { m, n : nat }(s1 : string(m), s2 : string(n)) : int =
   let
     val s1_l
       : size_t(m) = length(s1)
@@ -124,4 +124,4 @@ fn levenshtein_(s1 : string, s2 : string) : int =
   end
 
 fn levenshtein_vt {m:nat}{n:nat}(s1 : !strnptr(m), s2 : !strnptr(n)) : int =
-  levenshtein{m}{n}($UN.castvwtp1(s1), $UN.castvwtp1(s2))
+  levenshtein{m,n}($UN.castvwtp1(s1), $UN.castvwtp1(s2))
