@@ -78,11 +78,6 @@ fn levenshtein {m:nat}{n:nat}(s1 : string(m), s2 : string(n)) : int =
       end
     
     val column = array_initialize()
-    val column = arrayptr_make_uninitized<int>(s1_l + 1)
-    val () = arrayptr_initize<int>(column, s1_l + 1) where
-    { implement array_initize$init<int> (i, x) =
-        x := sz2i(i) }
-    val column = arrayptr_refize(column)
     
     fun loop2 { i : nat | i > 0 && i <= n+1 } .<n-i+1>. (x : int(i)) : void =
       if x <= sz2i(s2_l) then
