@@ -1,4 +1,5 @@
-// #define ALLOCA
+#define ALLOCA
+
 #include "share/atspre_staload.hats"
 #include "DATS/edit-distance.dats"
 #include "$PATSHOMELOCS/specats-0.4.0/mylibies.hats"
