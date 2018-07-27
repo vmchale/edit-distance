@@ -6,5 +6,6 @@ import           Text.EditDistance
 main :: IO ()
 main =
     defaultMain [ bgroup "edit distance"
-                      [ bench "levenshteinDistance" $ nf (levenshteinDistance defaultEditCosts "exclude") "excude" ]
+                      [ bench "levenshteinDistance" $ nf (levenshteinDistance defaultEditCosts "exclude") "excude"
+                      ]
                 ]

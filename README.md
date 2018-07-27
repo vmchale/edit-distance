@@ -14,3 +14,6 @@ in safe ATS and is performant.
 | Rust | `strsim` | X | 140.4 ns
 | Haskell | `edit-distance` | X | 413.5 ns |
 | C | n/a |  | 93.70 ns |
+
+Note that these benchmarks use `libgc` for ATS and C and thus ATS and
+C functions may be faster if you use manual memory management.
