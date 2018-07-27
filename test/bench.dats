@@ -1,4 +1,5 @@
 #define ALLOCA
+
 #include "$PATSHOMELOCS/ats-bench-0.3.3/bench.dats"
 #include "DATS/edit-distance.dats"
 
