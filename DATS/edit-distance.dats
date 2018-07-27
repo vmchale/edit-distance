@@ -42,17 +42,17 @@ fn levenshtein { m, n : nat }(s1 : string(m), s2 : string(n)) : int =
         prval (pf1_at, pf_arr) = array_v_uncons{int?}(pf_arr)
         val () = ptr_set<int>(pf1_at | p_arr, 0)
         var i: int = 0
-        prval [larr:addr]EQADDR () = eqaddr_make_ptr(p1_arr)
+        prval [l:addr]EQADDR () = eqaddr_make_ptr(p1_arr)
         var p = p1_arr
         prvar pf0 = array_v_nil{int}()
         prvar pf1 = pf_arr
         val () = while* { i : nat | i <= m } .<m-i>. ( i : int(i)
-                                                    , p : ptr(larr+i*sizeof(int))
-                                                    , pf0 : array_v(int, larr, i)
-                                                    , pf1 : array_v(int?, larr+i*sizeof(int), m-i)
-                                                    ) : ( pf0 : array_v(int, larr, m)
-                                                       , pf1 : array_v(int?, larr+i*sizeof(int), 0)
-                                                       ) =>
+                                                     , p : ptr(l+i*sizeof(int))
+                                                     , pf0 : array_v(int, l, i)
+                                                     , pf1 : array_v(int?, l+i*sizeof(int), m-i)
+                                                     ) : ( pf0 : array_v(int, l, m)
+                                                         , pf1 : array_v(int?, l+i*sizeof(int), 0)
+                                                         ) =>
             (i < sz2i(s1_l))
             {
               prval (pf_at, pf1_res) = array_v_uncons{int?}(pf1)
@@ -97,9 +97,9 @@ fn levenshtein { m, n : nat }(s1 : string(m), s2 : string(n)) : int =
                   
                   var old_diag = column[y]
                   val () = column[y] := min_3( column[y] + 1
-                                            , column[y - 1] + 1
-                                            , last_diag + bool2int(s1[y - 1], s2[x - 1])
-                                            )
+                                             , column[y - 1] + 1
+                                             , last_diag + bool2int(s1[y - 1], s2[x - 1])
+                                             )
                 in
                   inner_loop(y + 1, old_diag)
                 end
