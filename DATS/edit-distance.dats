@@ -20,7 +20,6 @@ implement {a} array_ptr_alloca {n} (asz) =
     (pf | p)
   end
 
-// end of [array_ptr_alloc]
 // Ported over from
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
 //
