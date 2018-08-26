@@ -1,5 +1,5 @@
 staload UN = "prelude/SATS/unsafe.sats"
-staload "SATS/edit-distance.sats"
+staload "./../SATS/edit-distance.sats"
 
 implement {a} array_ptr_alloca {n} (asz) =
   let
