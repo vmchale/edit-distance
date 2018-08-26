@@ -1,14 +1,5 @@
 staload UN = "prelude/SATS/unsafe.sats"
-
-extern
-fun alloca {n:int}(bsz : size_t(n)) :<!wrt> [l:agz] (b0ytes(n) @ l | ptr(l)) =
-  "mac#"
-
-extern
-castfn arrayptr_alloca_encode : {a:vt@ype} {l:addr} {n:int} (array_v(INV(a), l, n) | ptr(l)) -<0> arrayptr(a, l, n)
-
-extern
-fun {a:vt@ype} array_ptr_alloca {n:int} (asz : size_t(n)) :<!wrt> [l:agz] (array_v(a?, l, n) | ptr(l))
+staload "SATS/edit-distance.sats"
 
 implement {a} array_ptr_alloca {n} (asz) =
   let
@@ -24,7 +15,7 @@ implement {a} array_ptr_alloca {n} (asz) =
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
 //
 // With contributions from Hongwei Xi and Artyom Shalkhakov
-fn levenshtein { m, n : nat }(s1 : string(m), s2 : string(n)) : int =
+implement levenshtein {m,n} (s1, s2) =
   let
     val s1_l
       : size_t(m) = length(s1)
@@ -60,12 +51,12 @@ fn levenshtein { m, n : nat }(s1 : string(m), s2 : string(n)) : int =
               var c = g0ofg1(i)
               val () = ptr_set<int>(pf_at | p, c)
               val () = p := ptr1_succ<int>(p)
-              prval () = pf0 := array_v_extend{int}(pf0, pf_at)
+              prval () = pf0 := array_v_extend{int}(pf0,pf_at)
               val () = i := i + 1
             }
         prval () = pf_arr := pf0
         prval () = array_v_unnil{int?}(pf1)
-        prval pf_arr = array_v_cons{int}(pf1_at, pf_arr)
+        prval pf_arr = array_v_cons{int}(pf1_at,pf_arr)
         
 #ifdef ALLOCA
         var res = arrayptr_alloca_encode(pf_arr | p_arr)
@@ -114,7 +105,7 @@ fn levenshtein { m, n : nat }(s1 : string(m), s2 : string(n)) : int =
     column[s1_l]
   end
 
-fn levenshtein_(s1 : string, s2 : string) : int =
+implement levenshtein_ (s1, s2) =
   let
     extern
     castfn witness(s : string) : [m:nat] string(m)
@@ -122,5 +113,5 @@ fn levenshtein_(s1 : string, s2 : string) : int =
     levenshtein(witness(s1), witness(s2))
   end
 
-fn levenshtein_vt {m:nat}{n:nat}(s1 : !strnptr(m), s2 : !strnptr(n)) : int =
+implement levenshtein_vt {m}{n} (s1, s2) =
   levenshtein{m,n}($UN.castvwtp1(s1), $UN.castvwtp1(s2))
