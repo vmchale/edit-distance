@@ -10,7 +10,14 @@ in safe ATS and is performant.
 ### For Hacking
 
 To run the test suite, first install
-[atspkg](http://hackage.haskell.org/package/ats-pkg). Then, you can run
+[atspkg](http://hackage.haskell.org/package/ats-pkg). The simplest way to do so
+is to run
+
+```
+curl -sSl https://raw.githubusercontent.com/vmchale/atspkg/master/bash/install.sh | sh -s
+```
+
+Thereafter, you can run
 
 ```
 atspkg test
