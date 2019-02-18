@@ -5,6 +5,29 @@
 The Levenshtein edit distance, packaged for ATS. This implementation is written
 in safe ATS and is performant.
 
+## Building
+
+### For Hacking
+
+To run the test suite, first install
+[atspkg](http://hackage.haskell.org/package/ats-pkg). Then, you can run
+
+```
+atspkg test
+```
+
+to hack on the library.
+
+### For Use
+
+You can use the `edit-distance` package in `atspkg` projects with something like
+the example in
+[polyglot](https://github.com/vmchale/polyglot/blob/master/atspkg.dhall#L73).
+
+Currently, there is no NPM release for this package; however, there is nothing
+stopping you from using the tarballs or git repository to use this package
+conventionally using NPM.
+
 ## Benchmarks
 
 | Language | Library | Unicode | Time |
