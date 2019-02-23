@@ -1,14 +1,17 @@
 staload UN = "prelude/SATS/unsafe.sats"
 staload "./../SATS/edit-distance.sats"
 
-implement {a} array_ptr_alloca {n} (asz) =
+implement {a} array_ptr_alloca {dummy}{n} (asz) =
   let
-    val [l:addr](pf | p) = alloca(asz * sizeof<a>)
+    val [l:addr](pf, fpf | p) = alloca(asz * sizeof<a>)
     prval pf = __assert(pf) where
     { extern
       praxi __assert(pf : b0ytes(n*sizeof(a)) @ l) : array_v(a?, l, n) }
+    prval fpf = __assertfn(fpf) where
+    { extern
+      praxi __assertfn(fpf : b0ytes(n*sizeof(a)) @ l -> void @ dummy) : array_v(a?, l, n) -> void @ dummy }
   in
-    (pf | p)
+    (pf, fpf | p)
   end
 
 // Ported over from
@@ -25,7 +28,7 @@ implement levenshtein {m,n} (s1, s2) =
       let
         
 #ifdef ALLOCA
-        val (pf_arr | p_arr) = array_ptr_alloca<int>(succ(s1_l))
+        val (pf_arr, fpf | p_arr) = array_ptr_alloca<int>(succ(s1_l))
 #else
         val (pf_arr, pf_gc | p_arr) = array_ptr_alloc<int>(succ(s1_l))
 #endif
