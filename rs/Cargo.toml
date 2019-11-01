@@ -9,7 +9,7 @@ lto = true
 panic = "abort"
 
 [dev-dependencies]
-criterion = { git = "https://github.com/japaric/criterion.rs.git" }
+criterion = "0.3"
 
 [[bench]]
 name = "lev"
@@ -17,4 +17,4 @@ harness = false
 
 [dependencies]
 levenshtein = "1.0"
-strsim = "0.7"
+strsim = "0.9"
