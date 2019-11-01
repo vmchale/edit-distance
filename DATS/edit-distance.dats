@@ -1,4 +1,3 @@
-staload "libats/libc/SATS/alloca.sats"
 staload UN = "prelude/SATS/unsafe.sats"
 staload "./../SATS/edit-distance.sats"
 
