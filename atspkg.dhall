@@ -1,4 +1,4 @@
-let prelude = http://hackage.haskell.org/package/ats-pkg/src/dhall/atspkg-prelude.dhall
+let prelude = https://raw.githubusercontent.com/vmchale/atspkg/master/ats-pkg/dhall/atspkg-prelude.dhall
 in
 
 prelude.default ⫽
@@ -8,8 +8,10 @@ prelude.default ⫽
       , target = "${prelude.atsProject}/test"
       , gcBin = True
       }
-    , prelude.bin ⫽
-      { src = "test/bench.dats"
+    ]
+  , bench =
+    [ prelude.bin ⫽
+      { src = "bench/bench.dats"
       , target = "${prelude.atsProject}/bench"
       , gcBin = True
       }

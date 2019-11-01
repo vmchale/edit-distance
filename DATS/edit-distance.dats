@@ -2,37 +2,18 @@ staload "libats/libc/SATS/alloca.sats"
 staload UN = "prelude/SATS/unsafe.sats"
 staload "./../SATS/edit-distance.sats"
 
-implement {a} array_ptr_alloca {dummy}{n} (asz) =
-  let
-    val [l:addr](pf, fpf | p) = alloca(asz * sizeof<a>)
-    prval pf = __assert(pf) where
-    { extern
-      praxi __assert(pf : b0ytes(n*sizeof(a)) @ l) : array_v(a?, l, n) }
-    prval fpf = __assertfn(fpf) where
-    { extern
-      praxi __assertfn(fpf : b0ytes(n*sizeof(a)) @ l -> void @ dummy) : array_v(a?, l, n) -> void @ dummy }
-  in
-    (pf, fpf | p)
-  end
-
 // Ported over from
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
 //
 // With contributions from Hongwei Xi and Artyom Shalkhakov
 implement levenshtein {m,n} (s1, s2) =
   let
-    val s1_l
-      : size_t(m) = length(s1)
+    val s1_l: size_t(m) = length(s1)
     val s2_l: size_t(n) = length(s2)
-    
+
     fn array_initialize() : arrayref(int, m+1) =
       let
-        
-#ifdef ALLOCA
-        val (pf_arr, fpf | p_arr) = array_ptr_alloca<int>(succ(s1_l))
-#else
         val (pf_arr, pf_gc | p_arr) = array_ptr_alloc<int>(succ(s1_l))
-#endif
         var p1_arr = ptr1_succ<int>(p_arr)
         prval (pf1_at, pf_arr) = array_v_uncons{int?}(pf_arr)
         val () = ptr_set<int>(pf1_at | p_arr, 0)
@@ -61,18 +42,13 @@ implement levenshtein {m,n} (s1, s2) =
         prval () = pf_arr := pf0
         prval () = array_v_unnil{int?}(pf1)
         prval pf_arr = array_v_cons{int}(pf1_at,pf_arr)
-        
-#ifdef ALLOCA
-        var res = arrayptr_alloca_encode(pf_arr | p_arr)
-#else
         var res = arrayptr_encode(pf_arr, pf_gc | p_arr)
-#endif
       in
         arrayptr_refize(res)
       end
-    
+
     val column = array_initialize()
-    
+
     fun loop2 { i : nat | i > 0 && i <= n+1 } .<n-i+1>. (x : int(i)) : void =
       if x <= sz2i(s2_l) then
         {
@@ -83,13 +59,13 @@ implement levenshtein {m,n} (s1, s2) =
                 let
                   fn min_3(x : int, y : int, z : int) : int =
                     min(x, (min(y, z)))
-                  
+
                   fn bool2int(x : char, y : char) : int =
                     if x = y then
                       0
                     else
                       1
-                  
+
                   var old_diag = column[y]
                   val () = column[y] := min_3( column[y] + 1
                                              , column[y - 1] + 1
@@ -103,7 +79,7 @@ implement levenshtein {m,n} (s1, s2) =
           end
           val () = loop2(x + 1)
         }
-    
+
     val () = loop2(1)
   in
     column[s1_l]
