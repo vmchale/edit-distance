@@ -1,5 +1,5 @@
 let prelude =
-      https://raw.githubusercontent.com/vmchale/atspkg/master/ats-pkg/dhall/atspkg-prelude.dhall sha256:33e41e509b6cfd0b075d1a8a5210ddfd1919372f9d972c2da783c6187d2298ba
+      https://raw.githubusercontent.com/vmchale/atspkg/master/ats-pkg/dhall/atspkg-prelude.dhall sha256:38172c1bfad21ef2f1870d4489943236cee531ccc52314b8e91fa660a3f3fab7
 
 in    prelude.default
     ⫽ { test =
@@ -21,4 +21,5 @@ in    prelude.default
           # [ prelude.lowerDeps { name = "specats", version = [ 0, 4, 0 ] } ]
       , compiler = [ 0, 4, 0 ]
       , version = [ 0, 3, 13 ]
+      , atsLib = False
       }
