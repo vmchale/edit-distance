@@ -70,8 +70,8 @@ val levenshtein_c_delay_large: io = lam () => levenshtein_bench_c_large()
 // GOAL: around 100ns
 implement main0 () =
   {
-    val _ = print_slope("levenshtein", 15, levenshtein_delay)
-    val _ = print_slope("levenshtein_c", 15, levenshtein_c_delay)
-    val _ = print_slope("levenshtein_large", 4, levenshtein_delay_large)
-    val _ = print_slope("levenshtein_c_large", 4, levenshtein_c_delay_large)
+    val _ = print_slope("levenshtein", 16, levenshtein_delay)
+    val _ = print_slope("levenshtein_c", 16, levenshtein_c_delay)
+    val _ = print_slope("levenshtein_large", 5, levenshtein_delay_large)
+    val _ = print_slope("levenshtein_c_large", 5, levenshtein_c_delay_large)
   }
