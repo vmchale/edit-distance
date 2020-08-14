@@ -19,7 +19,7 @@ in    prelude.default
       , dependencies =
             prelude.mapPlainDeps [ "ats-bench" ]
           # [ prelude.lowerDeps { name = "specats", version = [ 0, 4, 0 ] } ]
-      , compiler = [ 0, 4, 0 ]
-      , version = [ 0, 3, 13 ]
+      , compiler = [ 0, 4, 2 ]
+      , version = [ 0, 4, 2 ]
       , atsLib = False
       }
